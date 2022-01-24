@@ -8,6 +8,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="LinearDS" />
         <module name="Linear Data Structures" />
+        <module name="Linear Data StructuresLab" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="13" />
