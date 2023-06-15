@@ -14,6 +14,17 @@ public class Fibonacci {
 
         long ftb = calcFib(n);
         System.out.println(ftb);
+
+//        Iterative way
+
+//        memo[1] = 1;
+//        memo[2] = 1;
+//
+//        for (int i = 3; i <= n; i++) {
+//            memo[i] = memo[i-1] + memo[i-2];
+//        }
+//
+//        System.out.println(memo[n]);
     }
 
     private static long calcFib(int n) {
