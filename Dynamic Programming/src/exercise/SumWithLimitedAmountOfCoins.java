@@ -1,12 +1,9 @@
 package exercise;
 
-import java.util.Arrays;
-import java.util.Scanner;
+import java.util.*;
 
 public class SumWithLimitedAmountOfCoins {
     public static int[] numbers;
-    public static int[] dp;
-    public static boolean[] visited;
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
@@ -17,10 +14,22 @@ public class SumWithLimitedAmountOfCoins {
 
         int target = Integer.parseInt(scanner.nextLine());
 
-        dp = new int[target+ 1];
+        Map<Integer, Integer> dp = new HashMap<>();
 
-        dp[0] = 1;
+        int result = 0;
+        dp.put(0, 0);
 
-        System.out.println(dp[target]);
+        for (int currentCoin : numbers) {
+
+            for (Integer number : new ArrayList<>(dp.keySet())) {
+                int newSum = currentCoin + number;
+
+                if (newSum == target) {
+                    result++;
+                }
+                dp.putIfAbsent(newSum, number);
+            }
+        }
+        System.out.println(result);
     }
 }

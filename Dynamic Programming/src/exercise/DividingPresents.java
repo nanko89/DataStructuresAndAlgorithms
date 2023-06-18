@@ -7,60 +7,42 @@ import java.util.Scanner;
 import java.util.stream.Collectors;
 
 public class DividingPresents {
-    public static int[] presents;
-    public static int[][] dp;
-    public static List<Integer> indexes;
-
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        presents = Arrays.stream(scanner.nextLine()
-                        .split("\\s+"))
+        int[] presents = Arrays.stream(scanner.nextLine().split("\\s+"))
                 .mapToInt(Integer::parseInt)
                 .toArray();
 
-        dp = new int[presents.length + 1][presents.length + 1];
-        indexes = new ArrayList<>();
+        int totalSum = Arrays.stream(presents).sum();
+        int[] sums = new int[totalSum + 1];
+        Arrays.fill(sums, -1);
+        sums[0] = 0;
 
-        int totalValue = Arrays.stream(presents).sum();
+        for (int currentIndex = 0; currentIndex < presents.length; currentIndex++) {
+            int presentValue = presents[currentIndex];
 
-        int targetValue = totalValue / 2;
-
-        int alanSum = 0;
-
-        int bestSum = 0;
-        for (int i = presents.length - 1 ; i > 0; i--) {
-            List<Integer> currentIndexes = new ArrayList<>();
-            alanSum = presents[i];
-            currentIndexes.add(i);
-            for (int j = i -1; j >= 0; j--) {
-
-            if (alanSum + presents[j] <= targetValue) {
-                alanSum += presents[j];
-                currentIndexes.add(j);
-            }
-            }
-            if (bestSum <= alanSum ){
-                bestSum = alanSum;
-                indexes = currentIndexes;
+            for (int prevSumIndex = totalSum - presentValue; prevSumIndex >= 0; prevSumIndex--) {
+                if (sums[prevSumIndex] != -1 && sums[prevSumIndex + presentValue] == -1) {
+                    sums[prevSumIndex + presentValue] = currentIndex;
+                }
             }
         }
 
+        int target = totalSum / 2;
 
-        List<Integer> alanPresent = new ArrayList<>();
-
-        for (int i = 0; i < indexes.size(); i++) {
-            alanPresent.add(presents[indexes.get(i)]);
+        for (int i = target; i >= 0; i--) {
+            if (sums[i] != -1) {
+                System.out.println("Difference: " + (totalSum - i - i));
+                System.out.println("Alan:" + i + " Bob:" + (totalSum - i));
+                System.out.print("Alan takes:");
+                while (i != 0) {
+                    System.out.print(" " + presents[sums[i]]);
+                    i -= presents[sums[i]];
+                }
+                System.out.println();
+                System.out.println("Bob takes the rest.");
+            }
         }
-
-        int alanPresents = alanPresent.stream().mapToInt(a -> a).sum();
-        int bobPresents = totalValue - alanPresents;
-        System.out.println("Difference: " + Math.abs(alanPresents - bobPresents));
-        System.out.println("Alan:" + alanPresents + " Bob:" + bobPresents);
-        System.out.print("Alan takes: ");
-        List<String> collect = alanPresent.stream().map(String::valueOf).collect(Collectors.toList());
-        System.out.println(String.join(" ", collect));
-        System.out.println("Bob takes the rest.");
-
     }
 }
