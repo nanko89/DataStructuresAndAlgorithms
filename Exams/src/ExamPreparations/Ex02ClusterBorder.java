@@ -33,6 +33,7 @@ public class Ex02ClusterBorder {
                 dp[i] = dp[i-2] + pairShipsTime[i-2];
             }
         }
+
         for (int i = dp.length - 1; i > 0; i--) {
             int diffTime = dp[i] - dp[i - 1];
             if (diffTime == singleShipsTimes[i -1 ]){
