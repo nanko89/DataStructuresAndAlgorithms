@@ -1,7 +1,7 @@
 import java.util.*;
 
 public class Salaries {
-    public static int[] salaries;
+    public static long[] salaries;
     public static boolean[] visited;
     public static List<List<Integer>> graph = new ArrayList<>();
 
@@ -10,7 +10,7 @@ public class Salaries {
 
         int employees = Integer.parseInt(scanner.nextLine());
 
-        salaries = new int[employees];
+        salaries = new long[employees];
         visited = new boolean[employees];
 
         int[] managersCount = new int[employees];
@@ -32,7 +32,7 @@ public class Salaries {
 
         for (int i = 0; i < managersCount.length; i++) {
             if (managersCount[i] == 0) {
-               sources.add(i);
+                sources.add(i);
             }
         }
 
@@ -55,13 +55,13 @@ public class Salaries {
         for (Integer child : graph.get(node)) {
             if (!visited[child]) {
                 dfs(child);
-                int sum = graph.get(child).stream().mapToInt(s -> salaries[s]).sum();
+                long sum = graph.get(child).stream().mapToLong(s -> salaries[s]).sum();
 
                 salaries[child] = sum == 0 ? 1 : sum;
             }
         }
 
-        int sum = graph.get(node).stream().mapToInt(s -> salaries[s]).sum();
+        long sum = graph.get(node).stream().mapToLong(s -> salaries[s]).sum();
 
         salaries[node] = sum == 0 ? 1 : sum;
     }
