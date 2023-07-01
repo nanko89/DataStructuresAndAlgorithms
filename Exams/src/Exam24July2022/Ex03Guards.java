@@ -28,7 +28,6 @@ public class Ex03Guards {
 
         int startIndex = Integer.parseInt(reader.readLine());
 
-
         Deque<Integer> queue = new ArrayDeque<>();
         queue.offer(startIndex);
 
