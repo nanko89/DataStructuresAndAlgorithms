@@ -1,65 +1,53 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 
 public class Demo {
-    public static char[][] matrix;
-    public static boolean[][] visited;
+    public static int[][] dp;
 
     public static void main(String[] args) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
-        int rows = Integer.parseInt(reader.readLine());
-        int cols = Integer.parseInt(reader.readLine());
+        String[] first = reader.readLine().split("\\s+");
 
-        matrix = new char[rows][cols];
+        String[] second = reader.readLine().split("\\s+");
 
-        for (int i = 0; i < rows; i++) {
-            char[] arr = reader.readLine().toCharArray();
-            matrix[i] = arr;
+        int max = findLongestSequence(first, second);
+
+        List<String> sequence = new ArrayList<>();
+
+        while (max > 0) {
+            sequence.add(0, first[max-1]);
+            max--;
         }
 
-        visited = new boolean[rows][cols];
-
-        int connectedTunnels = countTunnels();
-        System.out.println(connectedTunnels);
+        System.out.println(sequence);
     }
 
-    private static int countTunnels() {
-        int count = 0;
+    private static int findLongestSequence(String[] first, String[] second) {
 
-        for (int row = 0; row < matrix.length; row++) {
-            for (int col = 0; col < matrix[row].length; col++) {
-                if (!visited[row][col] && matrix[row][col] == 't') {
-                    dfs(row, col);
-                    count++;
+        dp = new int[first.length + 1][second.length + 1];
+
+        int max = 0;
+
+        for (int i = 1; i <= first.length; i++) {
+            for (int j = 1; j <= second.length; j++) {
+                if (first[i - 1].equals(second[j - 1])) {
+                    dp[i][j] = dp[i - 1][j - 1] + 1;
+                    if (dp[i][j] > max) {
+                        max = dp[i][j];
+                    }
+                } else {
+                    dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
                 }
             }
         }
-        return count;
-    }
 
-    private static void dfs(int row, int col) {
-        if (row < 0
-                || col < 0
-                || row >= matrix.length
-                || col >= matrix[row].length
-                || matrix[row][col] != 't'
-                || visited[row][col]) {
-            return;
-        }
-
-        visited[row][col] = true;
-
-        dfs(row + 1, col);
-        dfs(row - 1, col);
-        dfs(row, col - 1);
-        dfs(row, col + 1);
-        dfs(row + 1, col - 1);
-        dfs(row + 1, col + 1);
-        dfs(row - 1, col - 1);
-        dfs(row - 1, col + 1);
+        return max;
     }
 }
 

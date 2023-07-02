@@ -17,6 +17,7 @@ public class Ex01TBC {
             char[] row = reader.readLine().toCharArray();
             matrix[i] = row;
         }
+
         int connectedTunnels = countConnectedTunnels(matrix, rows, cols);
 
         System.out.println(connectedTunnels);
